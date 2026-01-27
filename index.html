@@ -1,24 +1,257 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Mi primera tienda</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atelier</title>
 
+<!-- FUENTES -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+<!-- ESTILO -->
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* Estilos carrito */
+#carrito {
+    position: fixed;
+    top: 80px;
+    right: -400px;
+    width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    transition: right 0.3s ease;
+    z-index: 9999;
+}
+#carrito.abierto { right: 20px; }
+#carrito ul { list-style: none; padding: 0; margin-bottom: 15px; }
+#carrito li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+#carrito button {
+    background: #ff4d4d;
+    border: none;
+    color: #fff;
+    padding: 2px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+}
+#btn-ver-carrito {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #000;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 9999;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+#btn-ver-carrito:hover { background-color: #444; }
+
+/* Badge de cantidad total */
+#btn-ver-carrito span {
+    background: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+    vertical-align: top;
+    margin-left: 4px;
+}
+
+.cantidad { margin: 10px 0; }
+.cantidad input { width: 50px; padding: 5px; margin-left: 5px; }
+
+.tallas ul { display: flex; gap: 5px; padding: 0; list-style: none; }
+.tallas li {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.tallas li.seleccionada { background-color: #4CAF50; color: #fff; }
+</style>
+</head>
 <body>
 
-<h1>Bienvenido a mi tienda</h1>
-<p>Aquí vendo mis productos</p>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h1 class="logo">ATELIER</h1>
+    <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="zapatos.html">Zapatos</a></li>
+        <li><a href="mochilas.html">Mochilas</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero fade-in">
+    <h2>Diseño. Elegancia. Función.</h2>
+    <p>Calzado y mochilas de estilo contemporáneo</p>
+    <a href="zapatos.html" class="btn-producto">Ver todos los zapatos</a>
+</section>
+
+<!-- BANNER DESTACADO -->
+<section class="banner-destacado fade-in">
+    <div class="banner">
+        <h2>Zapatos Destacados</h2>
+        <p>Calidad y estilo en cada paso</p>
+        <a href="zapatos.html" class="btn-producto">Ver colección</a>
+    </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section class="productos fade-in">
+
+    <!-- ZAPATO -->
+    <div class="producto-marca fade-in">
+        <a href="#">
+            <img src="img/zapato1.jpg" alt="Zapato minimalista">
+        </a>
+        <div class="info-producto">
+            <h3>Zapato Urbano</h3>
+            <p>Cuero sintético premium</p>
+            <p class="precio">$65.00</p>
+            <div class="cantidad">
+                <label>Cantidad:</label>
+                <input type="number" min="1" value="1">
+            </div>
+            <a href="#" class="btn-agregar">Agregar al carrito</a>
+        </div>
+    </div>
+
+    <!-- MOCHILA -->
+    <div class="producto-marca fade-in">
+        <a href="#">
+            <img src="img/mochila1.jpg" alt="Mochila minimalista">
+        </a>
+        <div class="info-producto">
+            <h3>Mochila Essential</h3>
+            <p>Diseño funcional</p>
+            <p class="precio">$48.00</p>
+            <div class="cantidad">
+                <label>Cantidad:</label>
+                <input type="number" min="1" value="1">
+            </div>
+            <a href="#" class="btn-agregar">Agregar al carrito</a>
+        </div>
+    </div>
+
+</section>
+
+<!-- BOTÓN WHATSAPP -->
+<a href="https://wa.me/+593939030827" class="whatsapp" target="_blank">
+    WhatsApp
+</a>
+
+<!-- BOTÓN CARRITO Y DIV -->
+<button id="btn-ver-carrito">🛒 <span id="cantidad-carrito">0</span></button>
+<div id="carrito">
+    <h2>Tu Carrito</h2>
+    <ul id="lista-carrito"></ul>
+    <p class="total">Total: $<span id="total">0</span></p>
+    <button id="vaciar-carrito">Vaciar carrito</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 ATELIER</p>
+</footer>
+
+<!-- JS NAVBAR SCROLL -->
+<script>
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        if(window.scrollY > 50) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+    });
+</script>
+
+<!-- JS CARRITO -->
+<script>
+const botones = document.querySelectorAll('.btn-agregar');
+const carrito = document.getElementById('carrito');
+const listaCarrito = document.getElementById('lista-carrito');
+const totalSpan = document.getElementById('total');
+const vaciarCarritoBtn = document.getElementById('vaciar-carrito');
+const btnVerCarrito = document.getElementById('btn-ver-carrito');
+const cantidadCarritoSpan = document.getElementById('cantidad-carrito');
+
+// Inicializar carrito desde localStorage
+let carritoProductos = JSON.parse(localStorage.getItem('carrito')) || [];
+
+// Función para actualizar carrito y badge
+function actualizarCarrito() {
+    listaCarrito.innerHTML = '';
+    let total = 0;
+    let cantidadTotal = 0;
+    carritoProductos.forEach((prod, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            ${prod.nombre} - $${prod.precio} x ${prod.cantidad} = $${(prod.precio*prod.cantidad).toFixed(2)}
+            <button onclick="eliminarProducto(${index})">x</button>
+        `;
+        listaCarrito.appendChild(li);
+        total += prod.precio * prod.cantidad;
+        cantidadTotal += prod.cantidad;
+    });
+    totalSpan.textContent = total.toFixed(2);
+    cantidadCarritoSpan.textContent = cantidadTotal;
+    localStorage.setItem('carrito', JSON.stringify(carritoProductos));
+}
+
+// Función eliminar producto
+function eliminarProducto(index) {
+    carritoProductos.splice(index, 1);
+    actualizarCarrito();
+}
+
+// Abrir/cerrar carrito
+btnVerCarrito.addEventListener('click', () => carrito.classList.toggle('abierto'));
+
+// Vaciar carrito
+vaciarCarritoBtn.addEventListener('click', () => {
+    carritoProductos = [];
+    actualizarCarrito();
+});
+
+// Agregar productos
+botones.forEach((boton) => {
+    boton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productoElem = this.closest('.producto-marca');
+        const nombre = productoElem.querySelector('h3').textContent;
+        const precio = parseFloat(productoElem.querySelector('.precio').textContent.replace('$',''));
+        let cantidad = parseInt(productoElem.querySelector('input[type="number"]').value) || 1;
+
+        // Añadir al carrito
+        const existe = carritoProductos.find(p => p.nombre === nombre);
+        if(existe) existe.cantidad += cantidad;
+        else carritoProductos.push({nombre, precio, cantidad});
+
+        actualizarCarrito();
+        carrito.classList.add('abierto');
+    });
+});
+
+// Mostrar carrito al cargar página
+actualizarCarrito();
+</script>
 
 </body>
 </html>
-
-<h2>Productos</h2>
-
-<div>
-    <h3>Zapatillas deportivas</h3>
-    <p>Precio: $25</p>
-    <p>Disponibles en varias tallas</p>
-    <a href="https://wa.me/+593939030827">Comprar por WhatsApp</a>
-</div>

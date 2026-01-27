@@ -1,26 +1,908 @@
+/* ================= RESET BÁSICO ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+/* ================= CUERPO ================= */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
 }
 
-h1 {
-    color: #333;
+/* ================= NAVBAR ================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255,255,255,0.95);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    border-bottom: 1px solid #e5e5e5;
+    z-index: 999;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-div {
-    background: white;
-    padding: 15px;
-    margin-top: 15px;
-    border-radius: 8px;
+.navbar.scrolled {
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px;
-    background: green;
-    color: white;
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.navbar ul li a {
+    color: #000;
     text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -3px;
+    left: 50%;
+    background-color: #000;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+/* ================= HERO ================= */
+.hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0;
+    height: 90vh; /* ocupa casi toda la pantalla */
+    background-image: url('imagene/DARK_WALL.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-color: rgba(0,0,0,0.5); /* filtro oscuro para resaltar texto */
+    z-index:0;
+}
+
+.hero h2, .hero p, .btn-producto {
+    position: relative;
+    z-index:1;
+}
+
+.hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+/* ================= BOTONES ================= */
+.btn-producto {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid #000;
+    color: #000;
+    text-decoration: none;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+    font-size: 14px;
+    border-radius: 6px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    margin-right: 10px;
+}
+
+.btn-producto::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    z-index: 0;
+}
+
+.btn-producto:hover::after {
+    left: 0;
+}
+
+.btn-producto:hover {
+    color: #fff;
+    background-color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* ================= PRODUCTOS ================= */
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 60px;
+    padding: 100px 60px;
+}
+
+.producto {
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.producto img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.producto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.producto p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.producto span {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.producto:hover img {
+    transform: scale(1.05);
+}
+
+/* ================= WHATSAPP ================= */
+.whatsapp {
+    position: fixed;
+    bottom: 20px;       /* desde abajo */
+    left: 20px;         /* lo movemos a la izquierda */
+    background-color: #25D366;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1010;      /* siempre encima del carrito y botón de carrito */
+}
+
+.whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+
+/* ================= FOOTER ================= */
+footer {
+    text-align: center;
+    padding: 40px;
+    font-size: 12px;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* ================= ENLACES ================= */
+a {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+a:hover {
+    color: #555;
+    transform: translateY(-2px);
+}
+
+/* ================= CONTACTO ================= */
+.contacto {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+    background-color: #fdfdfd;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+.contacto-contenedor {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 50px;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.contacto-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contacto-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+}
+
+.contacto-item .icono {
+    margin-bottom: 15px;
+    color: #000;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.contacto-item:hover .icono {
+    color: #555;
+    transform: scale(1.1);
+}
+
+.contacto-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.contacto-item p, .contacto-item a {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* ================= ANIMACIONES ================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+/* ================= HERO CON IMAGEN DE FONDO ================= */
+.hero {
+    height: 90vh;
+    background-image: url('imagene/DARK_WALL.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-color: rgba(0,0,0,0.5); /* filtro oscuro para resaltar el texto */
+    z-index:0;
+}
+
+.hero h2, .hero p, .btn-producto {
+    position: relative;
+    z-index:1;
+}
+
+/* ================= BANNER DESTACADO CON IMAGEN ================= */
+.banner-destacado {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    height: 400px; /* altura más grande para destacar */
+    background-image: url('imagene/ZAPATOS.jpg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+}
+
+.banner::after {
+    content: '';
+    position: absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-color: rgba(0,0,0,0.4); /* filtro sobre la imagen */
+    z-index:0;
+}
+
+.banner h2, .banner p, .banner .btn-producto {
+    position: relative;
+    z-index:1;
+}
+
+.banner h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.banner p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.banner .btn-producto {
+    padding: 14px 32px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.marcas {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.marcas h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.marcas-contenedor {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.marca-btn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 200px;
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.marca-btn::after {
+    content: '';
+    position: absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(0,0,0,0.4); /* filtro para texto legible */
+    z-index: 0;
+}
+
+.marca-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+.marca-btn span {
+    position: relative;
+    z-index: 1;
+    padding: 10px 15px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 6px;
+}
+
+/* ================= SECCIÓN DE PRODUCTOS POR MARCA ================= */
+.marca-productos {
+    padding: 140px 60px 80px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.titulo-marca {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.producto-marca {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 50px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-marca:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+.producto-marca img {
+    width: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.info-producto {
+    flex: 1;
+}
+
+.info-producto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.precio {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.tallas {
+    font-size: 1rem;
+}
+
+.tallas ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin-top: 5px;
+}
+
+.tallas ul li {
+    padding: 5px 10px;
+    border: 1px solid #000;
     border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.tallas ul li:hover {
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    .producto-marca {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .producto-marca img {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* BOTÓN AGREGAR AL CARRITO */
+.btn-agregar {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 25px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-agregar:hover {
+    background-color: #444;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* EFECTO HOVER EN IMAGEN DEL ZAPATO */
+.producto-marca img {
+    width: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-marca:hover img {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* ================= SECCIÓN DE PRODUCTOS POR MARCA ================= */
+.marca-productos {
+    padding: 140px 60px 80px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.titulo-marca {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.producto-marca {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 50px;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-marca:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+.producto-marca img {
+    width: 250px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.info-producto {
+    flex: 1;
+}
+
+.info-producto h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.precio {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.tallas {
+    font-size: 1rem;
+}
+
+.tallas ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin-top: 5px;
+}
+
+.tallas ul li {
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.tallas ul li:hover {
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    .producto-marca {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .producto-marca img {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Estilo del carrito */
+.carrito {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none; /* oculto por defecto */
+}
+
+.carrito.abierto {
+    display: block; /* se muestra cuando agregas productos */
+}
+
+.carrito ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+
+.carrito ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.carrito ul li button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.carrito p.total {
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+#vaciar-carrito {
+    width: 100%;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#vaciar-carrito:hover {
+    background-color: #444;
+}
+
+/* BOTÓN VER CARRITO */
+.btn-ver-carrito {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-ver-carrito:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* ESTILO DEL CARRITO */
+.carrito {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none; /* oculto por defecto */
+}
+
+.carrito.abierto {
+    display: block; /* se muestra cuando está abierto */
+}
+
+.carrito ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+
+.carrito ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.carrito ul li button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.carrito p.total {
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+#vaciar-carrito {
+    width: 100%;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#vaciar-carrito:hover {
+    background-color: #444;
+}
+
+/* BOTÓN VER CARRITO */
+.btn-ver-carrito {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-ver-carrito:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* ESTILO DEL CARRITO */
+.carrito {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none; /* oculto por defecto */
+}
+
+.carrito.abierto {
+    display: block; /* se muestra cuando está abierto */
+}
+
+.carrito ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+}
+
+.carrito ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.carrito ul li button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.carrito p.total {
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+#vaciar-carrito {
+    width: 100%;
+    padding: 10px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#vaciar-carrito:hover {
+    background-color: #444;
 }

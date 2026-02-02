@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ZAPATOS | Tienda</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* Estilos carrito */
+#carrito {
+    position: fixed;
+    top: 80px;
+    right: -400px;
+    width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    transition: right 0.3s ease;
+    z-index: 9999;
+}
+#carrito.abierto { right: 20px; }
+#carrito ul { list-style: none; padding: 0; margin-bottom: 15px; }
+#carrito li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+#carrito button {
+    background: #ff4d4d;
+    border: none;
+    color: #fff;
+    padding: 2px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+}
+#btn-ver-carrito {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #000;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 9999;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+#btn-ver-carrito:hover { background-color: #444; }
+
+/* Badge de cantidad total */
+#btn-ver-carrito span {
+    background: red;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 12px;
+    vertical-align: top;
+    margin-left: 4px;
+}
+
+.cantidad { margin: 10px 0; }
+.cantidad input { width: 50px; padding: 5px; margin-left: 5px; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h1 class="logo">ATELIER</h1>
+    <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="zapatos.html">Zapatos</a></li>
+        <li><a href="mochilas.html">Mochilas</a></li>
+        <li><a href="novedades.html"><strong>🔥 Novedades</strong></a></li>
+        <li><a href="reseñas.html">Reseñas</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+</nav>
+
+<!-- BOTÓN WHATSAPP GENERAL -->
+<a href="https://wa.me/+593939030827" class="whatsapp" target="_blank">
+    WhatsApp
+</a>
+
+<!-- SECCIÓN MARCAS -->
+<section class="marcas">
+    <h2>Explora por Marca</h2>
+    <div class="marcas-contenedor">
+        <a href="nike.html" class="marca-btn" style="background-image: url('imagene/nike.jpg');">Nike</a>
+        <a href="adidas.html" class="marca-btn" style="background-image: url('imagene/adidas.jpg');">Adidas</a>
+        <a href="puma.html" class="marca-btn" style="background-image: url('imagene/puma.jpg');">Puma</a>
+    </div>
+</section>
+
+<!-- BOTÓN CARRITO Y DIV -->
+<button id="btn-ver-carrito">🛒 <span id="cantidad-carrito">0</span></button>
+<div id="carrito">
+    <h2>Tu Carrito</h2>
+    <ul id="lista-carrito"></ul>
+    <p class="total">Total: $<span id="total">0</span></p>
+    <button id="vaciar-carrito">Vaciar carrito</button>
+</div>
+
+<footer>
+    <p>© 2026 ATELIER</p>
+</footer>
+
+<!-- JS CARRITO -->
+<script>
+const carrito = document.getElementById('carrito');
+const listaCarrito = document.getElementById('lista-carrito');
+const totalSpan = document.getElementById('total');
+const vaciarCarritoBtn = document.getElementById('vaciar-carrito');
+const btnVerCarrito = document.getElementById('btn-ver-carrito');
+const cantidadCarritoSpan = document.getElementById('cantidad-carrito');
+
+// Inicializar carrito desde localStorage
+let carritoProductos = JSON.parse(localStorage.getItem('carrito')) || [];
+
+// Función para actualizar carrito y badge
+function actualizarCarrito() {
+    listaCarrito.innerHTML = '';
+    let total = 0;
+    let cantidadTotal = 0;
+    carritoProductos.forEach((prod, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            ${prod.nombre} - $${prod.precio} x ${prod.cantidad} = $${(prod.precio*prod.cantidad).toFixed(2)}
+            <button onclick="eliminarProducto(${index})">x</button>
+        `;
+        listaCarrito.appendChild(li);
+        total += prod.precio * prod.cantidad;
+        cantidadTotal += prod.cantidad;
+    });
+    totalSpan.textContent = total.toFixed(2);
+    cantidadCarritoSpan.textContent = cantidadTotal;
+    localStorage.setItem('carrito', JSON.stringify(carritoProductos));
+}
+
+// Función eliminar producto
+function eliminarProducto(index) {
+    carritoProductos.splice(index, 1);
+    actualizarCarrito();
+}
+
+// Abrir/cerrar carrito
+btnVerCarrito.addEventListener('click', () => carrito.classList.toggle('abierto'));
+
+// Vaciar carrito
+vaciarCarritoBtn.addEventListener('click', () => {
+    carritoProductos = [];
+    actualizarCarrito();
+});
+
+// Mostrar carrito al cargar página
+actualizarCarrito();
+</script>
+
+</body>
+</html>
